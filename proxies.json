@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json.schemastore.org/proxies",
+  "proxies": {
+    "IndexProxy": {
+      "matchCondition": {
+        "route": "/"
+      },
+      "backendUri": "https://%WEBSITE_HOSTNAME%/api/index"
+    }
+  }
+}

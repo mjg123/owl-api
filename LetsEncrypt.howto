@@ -1,0 +1,9 @@
+Generating the SSL certs
+
+The API is deployed on Azure Functions, so we have to use the manual mode of certbot described here:
+https://certbot.eff.org/docs/using.html#manual
+We use DNS challenge as it's simpler
+
+Once the certs are generated, we convert them into pfx for azure with:
+openssl pkcs12 -export -out cert.pfx -inkey /etc/letsencrypt/live/owls.gilliard.lol/privkey.pem -in /etc/letsencrypt/live/owls.gilliard.lol/cert.pem -in /etc/letsencrypt/live/owls.gilliard.lol/fullchain.pem
+then upload the cert.pfx and the password you chose.
