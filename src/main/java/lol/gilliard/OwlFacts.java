@@ -29,7 +29,7 @@ public class OwlFacts {
             "Most nocturnal birds use echolocation when flying at night, but owls rely on their excellent night vision",
             "Owls use the tiny difference in time between a sound arriving at each ear. When sounds arrive at both ears simultaneously the owl is looking directly at the source.",
             "Owls use their flat faces to focus sound into their ears. They can change the shape of their face to listen to different things.",
-            "Some owls have tufts on top of its head that look like ears, but they are just feathers.",
+            "Some owls have tufts on top of their heads that look like ears, but they are just feathers. Their ears are on the sides of their head.",
             "The Great Horned Owl has the strongest gripping talons of the owls",
             "Owls use their sharp beaks like scissors to cut into their prey",
             "Snowy Owls are almost completely white, with just a few black flecks so they are well camouflaged in snowy surroundings.",
