@@ -1,21 +1,23 @@
 package lol.gilliard;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import com.microsoft.azure.functions.annotation.*;
 import com.microsoft.azure.functions.*;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 
 public class Api {
 
     /**
-     * This function listens at endpoint "/api/owlfact"
+     * This function listens at endpoint "/api/owlfacts"
      */
     @FunctionName("owlfacts")
-    public HttpResponseMessage run(
+    public HttpResponseMessage owlfacts(
             @HttpTrigger(name="req", methods={HttpMethod.GET, HttpMethod.POST}, authLevel=AuthorizationLevel.ANONYMOUS, route="api/owlfacts")
                     HttpRequestMessage<Optional<String>> request,
             final ExecutionContext context) {
@@ -44,6 +46,35 @@ public class Api {
         public ResponseJson(List<String> facts) {
             this.facts = facts;
         }
+    }
+
+    /**
+     * This function listens at endpoint "/api/owlpic"
+     */
+    @FunctionName("owlpic")
+    public HttpResponseMessage owlpic(
+            @HttpTrigger(name="req", methods={HttpMethod.GET}, authLevel=AuthorizationLevel.ANONYMOUS, route="api/owlpic")
+                    HttpRequestMessage<Optional<String>> request,
+            final ExecutionContext context) {
+
+        String picUrl = OwlPics.pics.get(new Random().nextInt(OwlPics.pics.size()));
+
+        try {
+            CloseableHttpResponse resp = HttpClients.createDefault().execute(new HttpGet(picUrl));
+
+            ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+            resp.getEntity().writeTo(byteStream);
+
+            return request.createResponseBuilder(HttpStatus.OK)
+                    .header("Content-Type", resp.getEntity().getContentType().getElements()[0].toString())
+                    .body(byteStream.toByteArray())
+                    .build();
+
+        } catch (Exception e){
+            return request.createResponseBuilder(HttpStatus.INTERNAL_SERVER_ERROR).body("Twit-twooo there's been a problem fetching your pic, sorry").build();
+
+        }
+
     }
 
     /**
