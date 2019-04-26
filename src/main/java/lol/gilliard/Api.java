@@ -57,17 +57,17 @@ public class Api {
                     HttpRequestMessage<Optional<String>> request,
             final ExecutionContext context) {
 
-        String picUrl = OwlPics.pics.get(new Random().nextInt(OwlPics.pics.size()));
+        OwlPics.PicWithAttribution picWithAttribution = OwlPics.pics.get(new Random().nextInt(OwlPics.pics.size()));
 
         try {
-            CloseableHttpResponse resp = HttpClients.createDefault().execute(new HttpGet(picUrl));
+            CloseableHttpResponse resp = HttpClients.createDefault().execute(new HttpGet(picWithAttribution.picUrl));
 
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             resp.getEntity().writeTo(byteStream);
 
             return request.createResponseBuilder(HttpStatus.OK)
                     .header("Content-Type", resp.getEntity().getContentType().getElements()[0].toString())
-                    .header("X-Attribution", picUrl)
+                    .header("X-Attribution", picWithAttribution.attributionUrl)
                     .body(byteStream.toByteArray())
                     .build();
 
