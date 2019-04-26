@@ -67,6 +67,7 @@ public class Api {
 
             return request.createResponseBuilder(HttpStatus.OK)
                     .header("Content-Type", resp.getEntity().getContentType().getElements()[0].toString())
+                    .header("X-Attribution", picUrl)
                     .body(byteStream.toByteArray())
                     .build();
 
