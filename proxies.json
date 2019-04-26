@@ -5,7 +5,7 @@
       "matchCondition": {
         "route": "/"
       },
-      "backendUri": "https://%WEBSITE_HOSTNAME%/api/index"
+      "backendUri": "https://%WEBSITE_HOSTNAME%/index"
     }
   }
 }
