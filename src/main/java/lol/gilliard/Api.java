@@ -6,10 +6,7 @@ import java.util.stream.Collectors;
 
 import com.microsoft.azure.functions.annotation.*;
 import com.microsoft.azure.functions.*;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.commons.io.IOUtils;
 
 public class Api {
 
@@ -60,18 +57,18 @@ public class Api {
         OwlPics.PicWithAttribution picWithAttribution = OwlPics.pics.get(new Random().nextInt(OwlPics.pics.size()));
 
         try {
-            CloseableHttpResponse resp = HttpClients.createDefault().execute(new HttpGet(picWithAttribution.picUrl));
 
-            ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-            resp.getEntity().writeTo(byteStream);
+            InputStream is = this.getClass().getClassLoader().getResourceAsStream(picWithAttribution.picFileName);
+
+            byte[] bytes = IOUtils.toByteArray(is);
 
             return request.createResponseBuilder(HttpStatus.OK)
-                    .header("Content-Type", resp.getEntity().getContentType().getElements()[0].toString())
+                    .header("Content-Type", "image/jpg")
                     .header("X-Attribution", picWithAttribution.attributionUrl)
-                    .body(byteStream.toByteArray())
+                    .body(bytes)
                     .build();
 
-        } catch (Exception e){
+        } catch (Exception e) {
             return request.createResponseBuilder(HttpStatus.INTERNAL_SERVER_ERROR).body("Twit-twooo there's been a problem fetching your pic, sorry").build();
 
         }
